@@ -18,13 +18,8 @@ function App() {
 
   return (
     <>
-    <h1 className='app__title'>Group filter</h1>
-    <div>
-      {data.map((el) => (
-        <div key={el.id}>
-          <p>{el.name}</p>
-        </div>
-      ))}
+    <div className="app__container">
+      <h1 className='app__title'>Group filter</h1>
     </div>
     </>
   )
