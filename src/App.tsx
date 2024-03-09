@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { Group } from './types/GroupsTypes';
+import TableComponent from './components/TableComponent';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
     <>
     <div className="app__container">
       <h1 className='app__title'>Group filter</h1>
+      <TableComponent />
     </div>
     </>
   )
