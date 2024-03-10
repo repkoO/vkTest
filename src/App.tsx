@@ -16,14 +16,18 @@ function App() {
           throw new Error('Network response was not ok')
         }
         const data = await response.json();
+        if (!data) {
+          console.error('Data is not available or result is 0');
+          return;
+        }
         setData(data)
       } catch (error) {
         console.error('There has been a problem with your fetch operation:', error)
       }
-      console.log(data);
     }
     fetchGroups()
-  }, [data])
+  }, [])
+
 
   return (
     <>
