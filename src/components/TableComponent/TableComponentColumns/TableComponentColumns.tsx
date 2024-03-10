@@ -1,5 +1,5 @@
 import { TableColumnsType } from "antd";
-import { Group } from "../../../types/GroupsTypes";
+import { Group, User } from "../../../types/GroupsTypes";
 
 
 export const columns: TableColumnsType<Group> = [
@@ -76,7 +76,12 @@ export const columns: TableColumnsType<Group> = [
       ],
       // specify the condition of filtering result
       // here is that finding the name started with `value`
-      onFilter: (value: string, record) => record.name.indexOf(value) === 0,
+      onFilter: (value, record: Group) => {
+        if (typeof value === 'string') {
+          return record.name.indexOf(value) === 0;
+        }
+        return false;
+      },
     },
     {
       title: 'Avatar',
@@ -107,7 +112,11 @@ export const columns: TableColumnsType<Group> = [
           value: 'white',
         },
       ],
-      onFilter: (value: string, record) => record.avatar_color?.indexOf(value) === 0,
+      onFilter: (value: React.Key | boolean, record: Group) =>  {
+        if (typeof value === 'string') {
+          return (record.avatar_color ?? '').indexOf(value) >= 0;
+        } return false;
+      }
     },
     {
       title: 'Private Title',
@@ -115,21 +124,30 @@ export const columns: TableColumnsType<Group> = [
       filters: [
         {
           text: 'Open',
-          value: 'London',
+          value: false,
         },
         {
-          text: 'New York',
-          value: 'New York',
+          text: 'Closed',
+          value: true,
         },
       ],
-      onFilter: (value: string, record) => record.address.indexOf(value) === 0,
+      render: (value: boolean) => value ? 'Closed' : 'Open',
+      onFilter: (value: React.Key | boolean, record: Group) => {
+        if (typeof value === 'boolean') {
+          return record.closed === value;
+        }
+        // Handle the case where value is not a boolean
+        // This might not be necessary if you're sure value will always be a boolean
+        return false;
+      }
     },
     {
       title: 'Members',
       dataIndex: 'members_count'
     },
-    // {
-    //   title: 'Friends',
-    //   dataIndex: 'friends',
-    // }
+    {
+      title: 'Friends',
+      dataIndex: 'friends',
+      render: (friends: User[] | undefined) => friends && friends.length > 0 ? 'Yes' : 'No'
+    }
   ];
