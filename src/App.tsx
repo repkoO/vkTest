@@ -9,6 +9,7 @@ function App() {
 
   useEffect(() => {
     const fetchGroups = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000))
       try {
         const response = await fetch('./data/groups.json')
         if (!response.ok) {
