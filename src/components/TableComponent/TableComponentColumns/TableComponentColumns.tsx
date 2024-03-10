@@ -1,5 +1,5 @@
 import { TableColumnsType } from "antd";
-import { Group, User } from "../../../types/GroupsTypes";
+import { Group } from "../../../types/GroupsTypes";
 
 
 export const columns: TableColumnsType<Group> = [
@@ -59,20 +59,6 @@ export const columns: TableColumnsType<Group> = [
           text: 'Птички',
           value: 'Птички',
         }
-        // {
-        //   text: 'Submenu',
-        //   value: 'Submenu',
-        //   children: [
-        //     {
-        //       text: 'Green',
-        //       value: 'Green',
-        //     },
-        //     {
-        //       text: 'Black',
-        //       value: 'Black',
-        //     },
-        //   ],
-        // },
       ],
       // specify the condition of filtering result
       // here is that finding the name started with `value`
@@ -124,11 +110,11 @@ export const columns: TableColumnsType<Group> = [
       filters: [
         {
           text: 'Open',
-          value: false,
+          value: true,
         },
         {
           text: 'Closed',
-          value: true,
+          value: false,
         },
       ],
       render: (value: boolean) => value ? 'Closed' : 'Open',
@@ -136,8 +122,6 @@ export const columns: TableColumnsType<Group> = [
         if (typeof value === 'boolean') {
           return record.closed === value;
         }
-        // Handle the case where value is not a boolean
-        // This might not be necessary if you're sure value will always be a boolean
         return false;
       }
     },
@@ -148,6 +132,25 @@ export const columns: TableColumnsType<Group> = [
     {
       title: 'Friends',
       dataIndex: 'friends',
-      render: (friends: User[] | undefined) => friends && friends.length > 0 ? 'Yes' : 'No'
+      filters: [
+        {
+          text: 'Yes',
+          value: 'Yes',
+        },
+        {
+          text: 'No',
+          value: 'No',
+        }
+      ],
+      render: (friends: Group[] | undefined) => friends && friends.length > 0 ? 'Yes' : 'No',
+      onFilter: (value, record: Group) => {
+        if (typeof value === 'string') {
+          // Convert the filter value to a boolean
+          const hasFriends = value === 'Yes';
+          // Check if the group has friends based on the filter value
+          return hasFriends === ((record.friends?.length ?? 0) > 0);
+       }
+       return false;
+      },
     }
   ];
