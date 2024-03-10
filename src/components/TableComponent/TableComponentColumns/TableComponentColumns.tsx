@@ -110,11 +110,11 @@ export const columns: TableColumnsType<Group> = [
       onFilter: (value: string, record) => record.avatar_color?.indexOf(value) === 0,
     },
     {
-      title: 'Closed',
-      dataIndex: 'address',
+      title: 'Private Title',
+      dataIndex: 'closed',
       filters: [
         {
-          text: 'London',
+          text: 'Open',
           value: 'London',
         },
         {

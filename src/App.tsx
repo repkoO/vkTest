@@ -9,13 +9,20 @@ function App() {
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const response = await fetch('./data/groups.json')
-      const data = await response.json();
+      try {
+        const response = await fetch('./data/groups.json')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json();
+        setData(data)
+      } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error)
+      }
       console.log(data);
-      setData(data)
     }
     fetchGroups()
-  }, [])
+  }, [data])
 
   return (
     <>
