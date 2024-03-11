@@ -1,7 +1,6 @@
 import { TableColumnsType, Tag } from "antd";
 import { Group } from "../../../types/GroupsTypes";
-
-// const [selectedRowKey, setSelectedRowKey] = useState(null)
+import { Table } from 'antd';
 
  export const columns: TableColumnsType<Group> = [
     {
@@ -97,10 +96,21 @@ import { Group } from "../../../types/GroupsTypes";
           value: 'white',
         },
       ],
+      render: (avatarColor: string, record: Group) => {
+        const circleStyle = {
+            width: '50px',
+            height: '50px',
+            borderRadius: '100px',
+            border: '1px solid grey',
+            backgroundColor: avatarColor,
+        };
+        return record.avatar_color ? <div style={circleStyle}></div> : null;
+    },
       onFilter: (value: React.Key | boolean, record: Group) =>  {
         if (typeof value === 'string') {
-          return (record.avatar_color ?? '').indexOf(value) >= 0;
-        } return false;
+          return (record.avatar_color || '').indexOf(value) === 0;
+        }
+        return false;
       }
     },
     {
@@ -109,20 +119,15 @@ import { Group } from "../../../types/GroupsTypes";
       filters: [
         {
           text: 'Open',
-          value: true,
+          value: false,
         },
         {
           text: 'Closed',
-          value: false,
+          value: true,
         },
       ],
-      render: (value: boolean) => value ? 'Closed' : 'Open',
-      onFilter: (value: React.Key | boolean, record: Group) => {
-        if (typeof value === 'boolean') {
-          return record.closed === value;
-        }
-        return false;
-      }
+      render: (value: boolean) => !value ? 'Open' : 'Closed',
+      onFilter: (value: React.Key | boolean, record: Group) => record.closed == value,
     },
     {
       title: 'Members',
@@ -160,10 +165,7 @@ import { Group } from "../../../types/GroupsTypes";
           </Tag>
         );
       },
-      onFilter: (value, record: Group) => {
-        const filterValue = Number(value);
-        return (record.friends?.length ?? 0) === filterValue;
-      },
-    }
+      onFilter: (value, record: Group) =>  record.friends?.length === Number(value)
+    },
+    Table.EXPAND_COLUMN,
   ];
-}

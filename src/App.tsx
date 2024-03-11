@@ -32,7 +32,6 @@ function App() {
     }
     fetchGroups()
   }, [])
-  console.log(data);
 
   return (
     <>
@@ -53,8 +52,7 @@ function App() {
             }
             />
         :
-        <TableComponent data={data}
-        />}
+        <TableComponent data={data} />}
     </div>
     </>
   )
