@@ -1,8 +1,9 @@
-import { TableColumnsType } from "antd";
+import { TableColumnsType, Tag } from "antd";
 import { Group } from "../../../types/GroupsTypes";
 
+// const [selectedRowKey, setSelectedRowKey] = useState(null)
 
-export const columns: TableColumnsType<Group> = [
+ export const columns: TableColumnsType<Group> = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -60,8 +61,6 @@ export const columns: TableColumnsType<Group> = [
           value: 'Птички',
         }
       ],
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
       onFilter: (value, record: Group) => {
         if (typeof value === 'string') {
           return record.name.indexOf(value) === 0;
@@ -134,23 +133,37 @@ export const columns: TableColumnsType<Group> = [
       dataIndex: 'friends',
       filters: [
         {
-          text: 'Yes',
-          value: 'Yes',
+          text: '3',
+          value: '3',
         },
         {
-          text: 'No',
-          value: 'No',
+          text: '2',
+          value: '2',
+        },
+        {
+          text: '1',
+          value: '1',
+        },
+        {
+          text: '0',
+          value: '0',
         }
       ],
-      render: (friends: Group[] | undefined) => friends && friends.length > 0 ? 'Yes' : 'No',
+      render: (friends: Group[] | undefined) => {
+        return friends && friends.length > 0 ? (
+          <Tag color="green">
+            {friends.length}
+          </Tag>
+        ) : (
+          <Tag color="red">
+            0
+          </Tag>
+        );
+      },
       onFilter: (value, record: Group) => {
-        if (typeof value === 'string') {
-          // Convert the filter value to a boolean
-          const hasFriends = value === 'Yes';
-          // Check if the group has friends based on the filter value
-          return hasFriends === ((record.friends?.length ?? 0) > 0);
-       }
-       return false;
+        const filterValue = Number(value);
+        return (record.friends?.length ?? 0) === filterValue;
       },
     }
   ];
+}
